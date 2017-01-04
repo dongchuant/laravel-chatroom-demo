@@ -38,11 +38,16 @@ class MessageCreated implements ShouldBroadcastNow
     public function broadcastOn()
     {
         if($this->message) {
-            if($this->message->room_id > 0) {
-                return new PresenceChannel('room.'.$this->message->room_id);
+            if($this->message->receiver > 0) {
+                if($this->message->sender > 0 && $this->message->sender != $this->message->receiver) {
+                    return [new PrivateChannel('user.'.$this->message->receiver), new PrivateChannel('user.'.$this->message->sender)];
+                }
+                else {
+                    return new PrivateChannel('user.'.$this->message->receiver);
+                }
             }
-            elseif($this->message->receiver > 0) {
-                return new PrivateChannel('user.'.$this->message->receiver);
+            elseif($this->message->room_id > 0) {
+                return new PresenceChannel('room.'.$this->message->room_id);
             }
         }
     }

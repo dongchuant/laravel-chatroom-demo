@@ -13,7 +13,27 @@ class ChatroomController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        return view('chatroom/index', ['user' => $user]);
+        if($user) {
+            $messages = Message::where('room_id', 1)->where(function($query) use($user){
+                $query->where('receiver', 0)->orWhere('receiver', $user->id)->orWhere('sender', $user->id);
+            })->take(50)->get();
+            $uids = $messages->pluck('sender')->toArray();
+            $uids = array_merge($uids, $messages->pluck('receiver')->toArray());
+            $uids = array_unique($uids);
+            if($uids) {
+                $users = User::find($uids);
+                $users = $users->getDictionary();
+                foreach ($messages as $message) {
+                    if(isset($users[$message->sender])) {
+                        $message->sender_name = $users[$message->sender]->name;
+                    }
+                    if(isset($users[$message->receiver])) {
+                        $message->receiver_name = $users[$message->receiver]->name;
+                    }
+                }
+            }
+        }
+        return view('chatroom/index', ['user' => $user, 'roomId' => 1, 'messages' => isset($messages) ? $messages : null]);
     }
 
     public function post(Request $request)
