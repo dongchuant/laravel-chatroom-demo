@@ -18,3 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::group(['prefix' => 'chatroom', 'middleware' => ['web']], function ($router) {
+    $router->get('/', 'ChatroomController@index');
+    $router->post('post', 'ChatroomController@post');
+});
+
+Route::group(['prefix' => 'broadcasting'], function ($router) {
+    $router->post('auth', 'BroadcastController@authenticate');
+});

@@ -1,0 +1,19 @@
+{
+	"appKey": "n6nl72c9oomroe99rnu3620c491th145jfj2tg8aeh75fl0fnifq9juaio1n",
+	"authHost": "http://chatroom.my",
+	"authEndpoint": "/broadcasting/auth",
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {},
+		"sqlite": {
+			"databasePath": "/database/laravel-echo-server.sqlite"
+		}
+	},
+	"devMode": false,
+	"host": "chatroom.my",
+	"port": "6001",
+	"referrers": [],
+	"socketio": {},
+	"sslCertPath": "",
+	"sslKeyPath": ""
+}
