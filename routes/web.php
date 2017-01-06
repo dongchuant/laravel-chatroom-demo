@@ -24,6 +24,6 @@ Route::group(['prefix' => 'chatroom', 'middleware' => ['web']], function ($route
     $router->post('post', 'ChatroomController@post');
 });
 
-Route::group(['prefix' => 'broadcasting'], function ($router) {
+Route::group(['prefix' => 'broadcasting', 'middleware' => ['web']], function ($router) {
     $router->post('auth', 'BroadcastController@authenticate');
 });
